@@ -6,63 +6,97 @@ import okhttp3.*;
 import java.io.*;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.Objects;
+import java.util.Optional;
 
 public class Main {
+    private static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
+    private static final String APP_URL = "https://pingponggoit.herokuapp.com/";
+    private static final String GET_USER_URL = "https://pingponggoit.herokuapp.com/getUser";
+    private static final String QUERY_PARAMS = "name=Oleksandr&surname=Yanov&salary=12121&gender=male";
+    private static final String SEND_MESSAGE_URL = "https://pingponggoit.herokuapp.com/sendMessage";
+    private static final String SEND_MESSAGE_CONTENT = "New message";
+
+
     public static void main(String[] args) throws Exception {
-//        javaDefault();
-//        getRequest();
-//        postRequest();
+        javaDefault();
+        getRequest();
+        postRequest();
         getWithQuery();
     }
 
     private static void getRequest() throws IOException {
         OkHttpClient client = new OkHttpClient();
+
         Request request = new Request.Builder()
-                .url("https://pingponggoit.herokuapp.com/sendMessage")
+                .url("https://pingponggoit.herokuapp.com/")
                 .get()
                 .build();
         Response response = client.newCall(request).execute();
 
         String headers = response.headers().toString();
-        String body = new String(response.body().bytes());
+        Response networkResponse = response.networkResponse();
+        String body = new String(Objects.requireNonNull(response.body()).bytes());
+
         System.out.println("Headers: " + headers);
-        System.out.println("Headers general: " + response.networkResponse());
+        System.out.println("Headers general: " + networkResponse);
         System.out.println("Body: " + body);
+
+        //CLOSE THE RESPONSE BODY
+        //FROM OKHTTP -> Response bodies must be {@linkplain ResponseBody closed} and may
+        //be consumed only once.
+        Optional.ofNullable(response.body()).ifPresent(ResponseBody::close);
     }
 
 
     private static void postRequest() throws IOException {
         OkHttpClient client = new OkHttpClient();
         Response response = client.newCall(new Request.Builder()
-                .url("https://pingponggoit.herokuapp.com/sendMessage")
-                .post(RequestBody.create(MediaType.parse("applciation/json"), "New message"))
+                .url(SEND_MESSAGE_URL)
+                .post(RequestBody.create(JSON, SEND_MESSAGE_CONTENT))
                 .build()).execute();
-        System.out.println(new String(response.body().bytes()));
+        System.out.println(new String(Objects.requireNonNull(response.body()).bytes()));
+        //CLOSE THE RESPONSE BODY
+        //FROM OKHTTP -> Response bodies must be {@linkplain ResponseBody closed} and may
+        //be consumed only once.
+        Optional.ofNullable(response.body()).ifPresent(ResponseBody::close);
     }
 
     private static void getWithQuery() throws Exception {
         OkHttpClient client = new OkHttpClient();
         Response response = client.newCall(new Request.Builder()
                 .get()
-                .url("https://pingponggoit.herokuapp.com/getUser?name=Oleksandr&surname=Yanov&salary=12121&gender=male")
+                .url(String.format("%s?%s", GET_USER_URL, QUERY_PARAMS))
                 .build()).execute();
+        User user = mapUserFromResponse(response);
+        System.out.println("User name is " + user.getName());
+        //CLOSE THE RESPONSE BODY
+        //FROM OKHTTP -> Response bodies must be {@linkplain ResponseBody closed} and may
+        //be consumed only once.
+        Optional.ofNullable(response.body()).ifPresent(ResponseBody::close);
+    }
+
+    private static User mapUserFromResponse(Response response) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
-        String string = new String(response.body().bytes());
-        User user = null;
-        user = mapper.readValue(string, User.class);
-        System.out.println(user);
+        String string = new String(Objects.requireNonNull(response.body()).bytes());
+        return mapper.readValue(string, User.class);
     }
 
     private static void javaDefault() throws IOException {
-        URL url = new URL("https://pingponggoit.herokuapp.com/");
+        URL url = new URL(APP_URL);
         URLConnection urlConnection = url.openConnection();
-        InputStream inputStream = urlConnection.getInputStream();
-        BufferedReader bufferedStream = new BufferedReader(new InputStreamReader(inputStream));
         StringBuffer buffer = new StringBuffer();
+        try (InputStream inputStream = urlConnection.getInputStream();
+             BufferedReader bufferedStream = new BufferedReader(new InputStreamReader(inputStream))) {
+            readResponse(buffer, bufferedStream);
+        }
+        System.out.println(buffer.toString());
+    }
+
+    private static void readResponse(StringBuffer buffer, BufferedReader bufferedStream) throws IOException {
         String response;
         while ((response = bufferedStream.readLine()) != null) {
             buffer.append(response);
         }
-        System.out.println(buffer.toString());
     }
 }
