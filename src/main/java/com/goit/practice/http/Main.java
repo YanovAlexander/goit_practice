@@ -4,18 +4,19 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import okhttp3.*;
 
 import java.io.*;
+import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLConnection;
 import java.util.Objects;
 import java.util.Optional;
 
 public class Main {
     private static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
     private static final String APP_URL = "https://pingponggoit.herokuapp.com/";
-    private static final String GET_USER_URL = "https://pingponggoit.herokuapp.com/getUser";
+    private static final String GET_USER_URL = String.format("%s%s", APP_URL, "getUser");
     private static final String QUERY_PARAMS = "name=Oleksandr&surname=Yanov&salary=12121&gender=male";
-    private static final String SEND_MESSAGE_URL = "https://pingponggoit.herokuapp.com/sendMessage";
+    private static final String SEND_MESSAGE_URL = String.format("%s/%s", APP_URL, "sendMessage");
     private static final String SEND_MESSAGE_CONTENT = "New message";
+    private static final String REQUEST_METHOD_GET = "GET";
 
 
     public static void main(String[] args) throws Exception {
@@ -84,7 +85,8 @@ public class Main {
 
     private static void javaDefault() throws IOException {
         URL url = new URL(APP_URL);
-        URLConnection urlConnection = url.openConnection();
+        HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+        urlConnection.setRequestMethod(REQUEST_METHOD_GET);
         StringBuffer buffer = new StringBuffer();
         try (InputStream inputStream = urlConnection.getInputStream();
              BufferedReader bufferedStream = new BufferedReader(new InputStreamReader(inputStream))) {
