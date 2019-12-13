@@ -1,4 +1,4 @@
-package com.goit.practice;
+package com.goit.practice.http;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 

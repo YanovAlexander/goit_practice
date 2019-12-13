@@ -1,8 +1,6 @@
 package com.goit.practice.http;
 
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.goit.practice.User;
 import okhttp3.*;
 
 import java.io.*;
@@ -12,12 +10,12 @@ import java.net.URLConnection;
 public class Main {
     public static void main(String[] args) throws Exception {
 //        javaDefault();
-//        okHttpClient();
-//          postRequest();
+//        getRequest();
+//        postRequest();
         getWithQuery();
     }
 
-    private static void okHttpClient() throws IOException {
+    private static void getRequest() throws IOException {
         OkHttpClient client = new OkHttpClient();
         Request request = new Request.Builder()
                 .url("https://pingponggoit.herokuapp.com/sendMessage")
@@ -39,7 +37,7 @@ public class Main {
                 .url("https://pingponggoit.herokuapp.com/sendMessage")
                 .post(RequestBody.create(MediaType.parse("applciation/json"), "New message"))
                 .build()).execute();
-        System.out.println(new java.lang.String(response.body().bytes()));
+        System.out.println(new String(response.body().bytes()));
     }
 
     private static void getWithQuery() throws Exception {
@@ -49,7 +47,7 @@ public class Main {
                 .url("https://pingponggoit.herokuapp.com/getUser?name=Oleksandr&surname=Yanov&salary=12121&gender=male")
                 .build()).execute();
         ObjectMapper mapper = new ObjectMapper();
-        java.lang.String string = new java.lang.String(response.body().bytes());
+        String string = new String(response.body().bytes());
         User user = null;
         user = mapper.readValue(string, User.class);
         System.out.println(user);
@@ -61,11 +59,10 @@ public class Main {
         InputStream inputStream = urlConnection.getInputStream();
         BufferedReader bufferedStream = new BufferedReader(new InputStreamReader(inputStream));
         StringBuffer buffer = new StringBuffer();
-        java.lang.String response;
+        String response;
         while ((response = bufferedStream.readLine()) != null) {
             buffer.append(response);
         }
+        System.out.println(buffer.toString());
     }
-
-
 }
