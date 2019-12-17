@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 //@JsonIgnoreProperties
 public class User {
+    private int id;
     private String name;
     private String surname;
     private int salary;
@@ -47,5 +48,13 @@ public class User {
     @Override
     public String toString() {
         return name;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }
