@@ -20,10 +20,10 @@ public class Main {
 
 
     public static void main(String[] args) throws Exception {
-        javaDefault();
-        getRequest();
-        postRequest();
-        getWithQuery();
+//        javaDefault();
+//        getRequest();
+        postRequest1();
+//        getWithQuery();
     }
 
     private static void getRequest() throws IOException {
@@ -55,6 +55,26 @@ public class Main {
         Response response = client.newCall(new Request.Builder()
                 .url(SEND_MESSAGE_URL)
                 .post(RequestBody.create(JSON, SEND_MESSAGE_CONTENT))
+                .build()).execute();
+        System.out.println(new String(Objects.requireNonNull(response.body()).bytes()));
+        //CLOSE THE RESPONSE BODY
+        //FROM OKHTTP -> Response bodies must be {@linkplain ResponseBody closed} and may
+        //be consumed only once.
+        Optional.ofNullable(response.body()).ifPresent(ResponseBody::close);
+    }
+
+    private static void postRequest1() throws IOException {
+        OkHttpClient client = new OkHttpClient();
+        User user = new User();
+        user.setGender("male");
+        user.setName("Alex");
+        user.setSurname("Yanov");
+        user.setSalary(100);
+        ObjectMapper mapper = new ObjectMapper();
+        String s = mapper.writeValueAsString(user);
+        Response response = client.newCall(new Request.Builder()
+                .url(SEND_MESSAGE_URL)
+                .post(RequestBody.create(JSON, s))
                 .build()).execute();
         System.out.println(new String(Objects.requireNonNull(response.body()).bytes()));
         //CLOSE THE RESPONSE BODY
