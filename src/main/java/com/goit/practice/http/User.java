@@ -1,8 +1,5 @@
 package com.goit.practice.http;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
-//@JsonIgnoreProperties
 public class User {
     private int id;
     private String name;
@@ -11,6 +8,22 @@ public class User {
     private String gender;
 
     public User() {
+    }
+
+    public User(Builder builder) {
+        this.id = builder.id;
+        this.name = builder.name;
+        this.surname = builder.surname;
+        this.salary = builder.salary;
+        this.gender = builder.gender;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -50,11 +63,40 @@ public class User {
         return name;
     }
 
-    public int getId() {
-        return id;
-    }
+    public static class Builder{
+        private int id;
+        private String name;
+        private String surname;
+        private int salary;
+        private String gender;
 
-    public void setId(int id) {
-        this.id = id;
+        public Builder id (int id) {
+            this.id = id;
+            return this;
+        }
+
+        public Builder name(String name) {
+            this.name = name;
+            return this;
+        }
+
+        public Builder surname(String surname) {
+            surname = surname;
+            return this;
+        }
+
+        public Builder salary(int salary) {
+            salary = salary;
+            return this;
+        }
+
+        public Builder gender(String gender) {
+            gender = gender;
+            return this;
+        }
+
+        public User build() {
+            return new User(this);
+        }
     }
 }
