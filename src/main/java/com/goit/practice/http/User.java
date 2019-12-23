@@ -60,7 +60,11 @@ public class User {
 
     @Override
     public String toString() {
-        return name;
+        return "User{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", surname='" + surname + '\'' +
+                '}';
     }
 
     public static class Builder{
