@@ -1,6 +1,5 @@
 package com.goit.practice.http.practice;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.goit.practice.http.User;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
@@ -49,7 +48,7 @@ public class Task3 {
 
     private static List<User> getUsers() {
         try {
-            return HttpUtil.sendGet(GET_USERS_URL, new TypeReference<List<User>>() {});
+            return HttpUtil.sendGetWithListResponse(GET_USERS_URL, User.class);
         } catch (IOException e) {
             System.out.println("Error while sending get request " + e.getMessage());
         }
