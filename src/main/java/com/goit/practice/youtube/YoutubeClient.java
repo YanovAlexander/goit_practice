@@ -6,15 +6,11 @@ import okhttp3.*;
 
 import java.io.IOException;
 import java.util.Objects;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 public class YoutubeClient {
     private static final String ROOT_URL = "https://www.googleapis.com";
     private static ObjectMapper mapper = new ObjectMapper();
-    private static final ExecutorService EXECUTOR = Executors.newFixedThreadPool(10);
-    private static final Dispatcher DISPATCHER = new Dispatcher(EXECUTOR);
-    private static final OkHttpClient CLIENT = new OkHttpClient.Builder().dispatcher(DISPATCHER).build();
+    private static final OkHttpClient CLIENT = new OkHttpClient.Builder().build();
 
     public static void main(String[] args) {
         Request request = new Request.Builder()
@@ -49,7 +45,7 @@ public class YoutubeClient {
         //и он не дает закончить работу нашего приложения.
         //По этому, добавьте свою реализацию executor сервиса и диспетчера, который вы в конце работы приложения спокойно
         //остановите.
-        EXECUTOR.shutdown();
+        CLIENT.dispatcher().executorService().shutdown();
     }
 
     private static HttpUrl prepareHttpUrl() {
