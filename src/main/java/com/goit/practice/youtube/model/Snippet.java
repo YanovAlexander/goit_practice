@@ -1,4 +1,4 @@
-package com.goit.practice.http.practice;
+package com.goit.practice.youtube.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -10,7 +10,6 @@ public class Snippet {
     private String description;
     private String channelTitle;
     private String liveBroadcastContent;
-
 
     public String getPublishedAt() {
         return publishedAt;
@@ -35,8 +34,6 @@ public class Snippet {
     public String getLiveBroadcastContent() {
         return liveBroadcastContent;
     }
-
-    // Setter Methods
 
     public void setPublishedAt(String publishedAt) {
         this.publishedAt = publishedAt;

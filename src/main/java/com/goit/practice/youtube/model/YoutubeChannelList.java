@@ -1,4 +1,4 @@
-package com.goit.practice.http.practice;
+package com.goit.practice.youtube.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -11,7 +11,7 @@ public class YoutubeChannelList {
     private String etag;
     private String nextPageToken;
     private String regionCode;
-    List<Items> items = new ArrayList<>();
+    private List<Item> items = new ArrayList<>();
 
     public String getKind() {
         return kind;
@@ -43,5 +43,13 @@ public class YoutubeChannelList {
 
     public void setRegionCode(String regionCode) {
         this.regionCode = regionCode;
+    }
+
+    public List<Item> getItems() {
+        return items;
+    }
+
+    public void setItems(List<Item> items) {
+        this.items = items;
     }
 }
