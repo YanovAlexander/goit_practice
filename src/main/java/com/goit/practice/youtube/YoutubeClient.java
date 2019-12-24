@@ -58,7 +58,7 @@ public class YoutubeClient {
                 .addQueryParameter("maxResults", "10")
                 .addQueryParameter("oder", "date")
                 .addQueryParameter("type", "video")
-                .addQueryParameter("key", "AIzaSyCGb80YiFrBGofQ3eB_Q_CDoC6B0lnG1n8")
+                .addQueryParameter("key", "API_KEY") // insert your API_KEY
                 .build();
     }
 }
