@@ -1,0 +1,68 @@
+<!doctype HTML>
+<html>
+<head>
+    <title>Calculator</title>
+    <script type="text/javascript">
+        function calculate() {
+            document.getElementById("result").innerHTML = "";
+
+            let operation = document.getElementById("operation");
+            let selectedOperation = operation.options[operation.selectedIndex].value;
+            let firstOperand = document.getElementById("firstOperand").value;
+            let secondOperand = document.getElementById("secondOperand").value;
+
+            let result = "";
+
+            switch (selectedOperation) {
+                case "plus" :
+                    result = parseInt(firstOperand) + parseInt(secondOperand);
+                    break;
+                case "minus" :
+                    result = parseInt(firstOperand) - parseInt(secondOperand);
+                    break;
+                case "multiply" :
+                    result = parseInt(firstOperand) * parseInt(secondOperand);
+                    break;
+                case "divided by" :
+                    result = parseInt(firstOperand) / parseInt(secondOperand);
+                    break;
+            }
+
+            document.getElementById("result").innerHTML = result;
+        }
+    </script>
+</head>
+<body>
+<p>Calculator</p>
+<table>
+    <thead>
+    <tr>
+        <td>First argument</td>
+        <td>Operation</td>
+        <td>Second argument</td>
+        <td>Result</td>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>
+            <input type="number" id="firstOperand">
+        </td>
+        <td>
+            <select id="operation">
+                <option value="plus" selected="selected">+</option>
+                <option value="minus">-</option>
+                <option value="multiply">*</option>
+                <option value="divided by">/</option>
+            </select>
+        </td>
+        <td>
+            <input type="number" id="secondOperand">
+        </td>
+        <td><p id="result"></p></td>
+    </tr>
+    </tbody>
+</table>
+<button onclick="calculate()">Calculate</button>
+</body>
+</html>

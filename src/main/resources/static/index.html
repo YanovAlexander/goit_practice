@@ -1,0 +1,69 @@
+<!doctype HTML>
+<html>
+<head>
+    <title>First page</title>
+    <meta charset="utf-8" name="description" content="This is my first page"/>
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <script type="text/javascript">
+        function showDate() {
+            let date = new Date();
+            document.getElementById("printDate").innerHTML = "Day " + date.getDate() + " month " + date.getMonth() + " year " + date.getFullYear();
+        }
+
+        function clearDate() {
+            document.getElementById("printDate").innerHTML = ""
+        }
+    </script>
+</head>
+<body>
+<p>This is my first web page!</p>
+<h1 style="color: aquamarine;font-weight: normal">This is my first web page!</h1>
+<h1>This is my first web page!</h1>
+<h2>This is my first web page!</h2>
+<h3>This is my first web page!</h3>
+<h4 id="h4Id">This is my first web page!</h4>
+<h9 class="h4Class">This is my first web page!</h9>
+
+<pre class="h4Class">
+				 -----           |-----
+		||----|          ----||
+		||-----         -----||
+		||-----|       |-----||
+		|| -----       ------||
+		||- ----|     |------||
+		||---||--     -------||
+		||--|| --|   |-------||
+		|| -|| |--   --- - --||
+		|| -||  --|-|--| - ---|
+		|---||  |-----| |-----|
+		|---||   |----  |-----|
+		|----|    ---   |-----|
+		|-----          ------|
+		</pre>
+<input type="number">
+<!-- onlick method used for add js listener to the button -->
+<button onclick="showDate()">Show date</button>
+<button onclick="clearDate()">Clear date</button>
+<p id="printDate" style="display: inline"></p>
+<!--  Создание таблицы -->
+<table>
+    <thead>
+    <tr>
+        <td class="h4Class">Name</td>
+        <td>Last Name</td>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>Alex</td>
+        <td>Yanov</td>
+    </tr>
+    <tr>
+        <td>Andrew</td>
+        <td>McDonald</td>
+    </tr>
+    </tbody>
+</table>
+
+</body>
+</html>
