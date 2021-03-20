@@ -85,17 +85,17 @@ public class User {
         }
 
         public Builder surname(String surname) {
-            surname = surname;
+            this.surname = surname;
             return this;
         }
 
         public Builder salary(int salary) {
-            salary = salary;
+            this.salary = salary;
             return this;
         }
 
         public Builder gender(String gender) {
-            gender = gender;
+            this.gender = gender;
             return this;
         }
 

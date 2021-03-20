@@ -20,14 +20,34 @@ public class Task4 {
         System.out.println("User before update " + user);
 
         user.setSalary(2001212);
-        user.setName("Anton");
-        updateUser(user);
+        user.setName("Andrew");
+        user.setSurname("Robertson");
+//        updateUserOkHttpClient(user);
+        updateUserJava11Client(user);
 
-        User updatedUser = getUserById(user.getId());
+//        User updatedUser = getUserByIdOkHttp(user.getId());
+        User updatedUser = getUserBytIdJava11Client(user.getId());
         System.out.println("Updated user " + updatedUser);
     }
 
-    private static User getUserById(int id) {
+    private static void updateUserJava11Client(User user) {
+        try {
+            HttpClient11Util.sendPut(String.format(OVERWRITE_URL, user.getId()), user, User.class);
+        } catch (IOException | InterruptedException e) {
+            System.out.println("Error while sending put request " + e.getMessage());
+        }
+    }
+
+    private static User getUserBytIdJava11Client(int id) {
+        try {
+            return HttpClient11Util.sendGet(String.format(URL, id), User.class);
+        } catch (IOException | InterruptedException e) {
+            System.out.println("Error while sending get request " + e.getMessage());
+        }
+        return null;
+    }
+
+    private static User getUserByIdOkHttp(int id) {
         try {
             return HttpUtil.sendGet(String.format(URL, id), User.class);
         } catch (IOException e) {
@@ -36,7 +56,7 @@ public class Task4 {
         return null;
     }
 
-    private static void updateUser(User user) {
+    private static void updateUserOkHttpClient(User user) {
         try {
             HttpUtil.sendPut(String.format(OVERWRITE_URL, user.getId()),
                     RequestBody.create(JSON_MEDIA_TYPE, JsonUtil.writeValueAsString(user)), User.class);

@@ -22,13 +22,43 @@ public class Task3 {
                 .gender("male")
                 .build();
 
-        createUser(user);
-        System.out.println("List of users before delete operation" + getUsers());
-        removeUser(user);
-        System.out.println("List of users after delete operation " + getUsers());
+//        createUserOkHttpClient(user);
+        createUserJava11HttpClient(user);
+//        System.out.println("List of users before delete operation" + getUsersOkHttpClient());
+        System.out.println("List of users before delete operation" + getUsersJava11HttpClient());
+//        removeUserOkHttpClient(user);
+        removeUserJava11HttpClient(user);
+//        System.out.println("List of users after delete operation " + getUsersOkHttpClient());
+        System.out.println("List of users after delete operation " + getUsersJava11HttpClient());
     }
 
-    private static void removeUser(User user) {
+    private static List<User> getUsersJava11HttpClient() {
+        try {
+            return HttpClient11Util.sendGetWithListResponse(GET_USERS_URL, User.class);
+        } catch (IOException | InterruptedException e) {
+            System.out.println("Error while sending get request " + e.getMessage());
+        }
+        return List.of();
+    }
+
+    private static void removeUserJava11HttpClient(User user) {
+        try {
+            HttpClient11Util.sendDelete(REMOVE_USER, user, User.class);
+        } catch (IOException | InterruptedException e) {
+            System.out.println("Error while sending delete request " + e.getMessage());
+        }
+    }
+
+    private static void createUserJava11HttpClient(User user) {
+        try {
+            final User result = HttpClient11Util.sendPost(CREATE_USER_URL, user, User.class);
+            System.out.println("User created with id " + result.getId());
+        } catch (IOException | InterruptedException e) {
+            System.out.println("Error while sending delete request " + e.getMessage());
+        }
+    }
+
+    private static void removeUserOkHttpClient(User user) {
         try {
             HttpUtil.sendDelete(REMOVE_USER, RequestBody.create(JSON_MEDIA_TYPE, JsonUtil.writeValueAsString(user)), Boolean.class);
         } catch (IOException e) {
@@ -36,7 +66,7 @@ public class Task3 {
         }
     }
 
-    private static void createUser(User user) {
+    private static void createUserOkHttpClient(User user) {
         try {
             User resultUser = HttpUtil.sendPost(CREATE_USER_URL, RequestBody.create(JSON_MEDIA_TYPE, JsonUtil.writeValueAsString(user)),
                     User.class);
@@ -46,7 +76,7 @@ public class Task3 {
         }
     }
 
-    private static List<User> getUsers() {
+    private static List<User> getUsersOkHttpClient() {
         try {
             return HttpUtil.sendGetWithListResponse(GET_USERS_URL, User.class);
         } catch (IOException e) {
